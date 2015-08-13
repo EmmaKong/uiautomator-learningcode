@@ -14,7 +14,7 @@ ant build
  
 adb push D:\Develop\android\UiAutomator\bin\AutoRunner.jar data/local/tmp
  
-adb shell uiautomator runtest AutoRunner.jar -c AutoRunner.Runner
+adb shell uiautomator runtest AutoRunner.jar -c AutoRunner.Test1
 
 
 
