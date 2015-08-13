@@ -1,3 +1,3 @@
 # uiautomator-learningcode
 
-Uiantomator 学习代码
+Uiautomator 学习代码
