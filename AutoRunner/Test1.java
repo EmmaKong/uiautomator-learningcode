@@ -20,7 +20,7 @@ public class Test1 extends UiAutomatorTestCase {
 		 if(!getUiDevice().isScreenOn()){			 
 			 getUiDevice().wakeUp();  // 唤醒			 
 		 }
-		//等待3秒  
+		 //等待3秒  
 	     try {  
 	         Thread.sleep(3000);  
 	     } catch (InterruptedException e1) {  
@@ -36,6 +36,12 @@ public class Test1 extends UiAutomatorTestCase {
 		 getUiDevice().pressHome(); 
 		 
 		 getUiDevice().openNotification();  //打开通知栏
+		 //等待3秒  
+	     try {  
+	         Thread.sleep(3000);  
+	     } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+	     }  
 		 getUiDevice().pressHome(); 
 		 
 		 
@@ -87,34 +93,88 @@ public class Test1 extends UiAutomatorTestCase {
 	     UiObject weiboApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()),"Weibo");
 		 weiboApp.clickAndWaitForNewWindow();
 		 
+		 // 判断打开页面的内容
+		 // 主页面 或者 登录页面		 
 		 UiObject share = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rl_composer"));
-		 share.clickAndWaitForNewWindow();
-		 UiObject close_share = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/pop_control_bar_front_close_img"));
-		 close_share.clickAndWaitForNewWindow();
+		 if(share.exists()){
+			 share.clickAndWaitForNewWindow();
+			 UiObject close_share = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/pop_control_bar_front_close_img"));
+			 close_share.clickAndWaitForNewWindow();
+			 //进入登录页
+			 UiObject Login = new UiObject(new UiSelector().text("Login"));
+			 Login.clickAndWaitForNewWindow();
+			 
+		 }
 		 
-		 //进入登录页
-		 UiObject Login = new UiObject(new UiSelector().text("Login"));
-		 Login.clickAndWaitForNewWindow();
-		 
-		 UiObject logintext =new UiObject(new UiSelector().resourceId("com.sina.weibo:id/etLoginUsername"));
+		 UiObject logintext = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/etLoginUsername"));
 		 logintext.clickAndWaitForNewWindow(); 
 		 	 
-		 UiObject clearbutton =new UiObject(new UiSelector().resourceId("com.sina.weibo:id/login_user_tips_btn"));//点击输入账号的清除叉叉
+		 UiObject clearbutton = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/login_user_tips_btn"));//点击输入账号的清除叉叉
 		 clearbutton.clickAndWaitForNewWindow();
 		 
 		 //输入用户名，密码
 		 logintext.setText("1229480203@qq.com");
 		 
-		 UiObject Pwdtext =new UiObject(new UiSelector().resourceId("com.sina.weibo:id/etPwd"));
+		 UiObject Pwdtext = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/etPwd"));
 		 Pwdtext.setText("whlg0902???");
 		 // m登录
-		 UiObject Loginbutton =new UiObject(new UiSelector().resourceId("com.sina.weibo:id/bnLogin")); 
+		 UiObject Loginbutton = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/bnLogin")); 
 		 Loginbutton.clickAndWaitForNewWindow();
 		
 		 // 判断是否弹出验证码输入框
-		 UiObject Loginbutton =new UiObject(new UiSelector().resourceId("com.sina.weibo:id/bnLogin")); 
-		 Loginbutton.clickAndWaitForNewWindow();
-		 if
+		 UiObject captcha = new UiObject(new UiSelector().text("Please enter the captcha")); 	
+		 if(captcha.exists()){
+			 UiObject calcelbutton = new UiObject(new UiSelector().text("Cancel")); 
+			 calcelbutton.clickAndWaitForNewWindow();
+		 }else{
+			 //成功进入微博
+			 // 下拉刷新
+			 getUiDevice().swipe(width/2, 0, width/2, height, 5);
+			 //等待5秒  
+		     try {  
+		         Thread.sleep(5000);  
+		     } catch (InterruptedException e1) {  
+		         e1.printStackTrace();  
+		     }          
+			 
+			 UiObject rltitle  = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitleBack"));
+			 rltitle.clickAndWaitForNewWindow();
+			//等待5秒  
+		     try {  
+		         Thread.sleep(5000);  
+		     } catch (InterruptedException e1) {  
+		         e1.printStackTrace();  
+		     }  
+		     getUiDevice().pressBack();
+		     
+		     UiObject Profile = new UiObject(new UiSelector().description("Profile"));
+		     Profile.clickAndWaitForNewWindow();
+		     // 退出登录
+		     UiObject settings = new UiObject(new UiSelector().description("Setting"));
+		     settings.clickAndWaitForNewWindow();
+		     
+		     UiObject account = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/accountLayout"));
+		     account.clickAndWaitForNewWindow();
+		     
+		     UiObject Loginout = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/exitAccountContent"));
+		     Loginout.clickAndWaitForNewWindow();
+		     
+		     UiObject Okbutton = new UiObject(new UiSelector().text("OK"));
+		     Okbutton.clickAndWaitForNewWindow();
+		     
+		     getUiDevice().pressHome();
+		         
+			 
+		 }
+		 
+		// 滑至下一 屏
+	     //getUiDevice().swipe(0, height/2, width, height/2, 2); 
+	     
+	     // 打开微博
+	   //  UiObject weiboApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()),"Weibo");
+		// weiboApp.clickAndWaitForNewWindow();
+		 
+		 
 		 //getUiDevice().pressHome(); 
 		 
 	     
