@@ -4,6 +4,7 @@ D:
 
 cd %ANDROID_HOME%\tools
  
+android list
  
 android create uitest-project -n AutoRunner -t 1 -p D:\Develop\android\UiAutomator
  

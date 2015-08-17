@@ -1,8 +1,11 @@
 package AutoRunner;
 
-//import android.widget.RelativeLayout;
 
-import android.widget.TextView;
+//import java.io.IOException;
+
+import java.io.IOException;
+
+//import android.widget.TextView;
 //import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.os.RemoteException;
@@ -17,8 +20,19 @@ import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 public class Test1 extends UiAutomatorTestCase {
 	 public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		 
+		 // 获取屏幕大小
+		 int height = getUiDevice().getDisplayHeight();
+		 int width = getUiDevice().getDisplayWidth();
 		 if(!getUiDevice().isScreenOn()){			 
-			 getUiDevice().wakeUp();  // 唤醒			 
+			 getUiDevice().wakeUp();  // 唤醒		
+			//等待3秒  
+		     try {  
+		         Thread.sleep(3000);  
+		     } catch (InterruptedException e1) {  
+		         e1.printStackTrace();  
+		     }  
+			// 划屏，解锁
+			 getUiDevice().swipe(width/2, (int)(height*0.9), width/2, (int)(height*0.1), 5); 	 
 		 }
 		 //等待3秒  
 	     try {  
@@ -26,32 +40,25 @@ public class Test1 extends UiAutomatorTestCase {
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
 	     }  
-	        
-		 // 获取屏幕大小
-		 int height = getUiDevice().getDisplayHeight();
-		 int width = getUiDevice().getDisplayWidth();
-		 
-         // 划屏，解锁
-		 getUiDevice().swipe(width/2, (int)(height*0.9), width/2, (int)(height*0.1), 2); 
-		 getUiDevice().pressHome(); 
-		 
-		 getUiDevice().openNotification();  //打开通知栏
-		 //等待3秒  
-	     try {  
-	         Thread.sleep(3000);  
-	     } catch (InterruptedException e1) {  
-	         e1.printStackTrace();  
-	     }  
-		 getUiDevice().pressHome(); 
-		 
-		 
-		 UiScrollable appview = new UiScrollable (new UiSelector().scrollable(true));
-	     appview.setAsHorizontalList();
-	     int appNum = appview.getChildCount();
-	     System.out.println("The Number of horizontal view: " + appNum);
+	     getUiDevice().pressHome();   
+		
+		 // view视图
+		// UiScrollable appview = new UiScrollable (new UiSelector().scrollable(true));
+	    // appview.setAsHorizontalList();
 	     
-		 UiObject settingApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()), "Settings");
-		 settingApp.clickAndWaitForNewWindow();
+	     //int appNum = appview.getChildCount();
+	    // System.out.println("The Number of horizontal view: " + appNum);
+	     
+	     try {
+	         Runtime.getRuntime().exec("am start -n com.android.settings/.Settings");
+		          	
+	     } catch (IOException e) {
+				e.printStackTrace();
+				
+	     }
+
+		 //UiObject settingApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()), "Settings");
+		// settingApp.clickAndWaitForNewWindow();
 		
 	     
 	     UiScrollable settingItems = new UiScrollable(new UiSelector().scrollable(true));  
@@ -61,9 +68,15 @@ public class Test1 extends UiAutomatorTestCase {
 	     getUiDevice().pressBack();  
 	     getUiDevice().pressHome(); 
 	     
-	     
-	     UiObject FileManagerApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()), "File Manager");
-		 FileManagerApp.clickAndWaitForNewWindow();
+	     try {
+	         Runtime.getRuntime().exec("am start -n com.android.filemanager/.FileManagerActivity");
+	       
+	     } catch (IOException e) {
+				e.printStackTrace();		
+	     }
+
+	    // UiObject FileManagerApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()), "File Manager");
+		// FileManagerApp.clickAndWaitForNewWindow();
 	     
 	     UiObject CatagoryItem = new UiObject(new UiSelector().resourceId("com.android.filemanager:id/category_browse"));
 	     CatagoryItem.click();
@@ -86,100 +99,235 @@ public class Test1 extends UiAutomatorTestCase {
 	  
 	     getUiDevice().pressHome(); 
 	        
-	     // 滑至下一 屏
-	     getUiDevice().swipe(0, height/2, width, height/2, 2); 
-	     
+	     try {
+	         Runtime.getRuntime().exec("am start -n com.sina.weibo/.MainTabActivity");
+	       
+	     } catch (IOException e) {
+				e.printStackTrace();		
+	     }
 	     // 打开微博
-	     UiObject weiboApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()),"Weibo");
-		 weiboApp.clickAndWaitForNewWindow();
+	    // UiObject weiboApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()),"Weibo");
+		// weiboApp.clickAndWaitForNewWindow();
+		 //等待 缓冲
+	     try {  
+	         Thread.sleep(5000);  
+	     } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+	     }  
+         
+	     // 刷新
+	     UiObject weiboHome = new UiObject(new UiSelector().description("Home"));
+		 weiboHome.clickAndWaitForNewWindow();
 		 
-		 // 判断打开页面的内容
-		 // 主页面 或者 登录页面		 
-		 UiObject share = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rl_composer"));
-		 if(share.exists()){
-			 share.clickAndWaitForNewWindow();
-			 UiObject close_share = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/pop_control_bar_front_close_img"));
-			 close_share.clickAndWaitForNewWindow();
-			 //进入登录页
-			 UiObject Login = new UiObject(new UiSelector().text("Login"));
-			 Login.clickAndWaitForNewWindow();
+		 // 下拉刷新
+		 getUiDevice().swipe(width/2, 100, width/2, height-100, 5);
+		 //等待5秒  
+		 try {  
+		     Thread.sleep(5000);  
+		 } catch (InterruptedException e1) {  
+			 e1.printStackTrace();  
+		 }          
 			 
+	     UiObject rltitle  = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitleBack"));
+	     rltitle.clickAndWaitForNewWindow();
+		 //等待5秒  
+		 try {  
+		     Thread.sleep(5000);  
+		 } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+		 }  
+		 getUiDevice().pressBack();
+		     
+		 UiObject weiboMessage = new UiObject(new UiSelector().description("Message"));
+		 weiboMessage.clickAndWaitForNewWindow();
+		 
+		 UiObject newmessage  = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/tvItemNum"));
+	     if(newmessage.exists()){
+	    	 newmessage.clickAndWaitForNewWindow();
+	    	 getUiDevice().pressBack();
+	     }
+	     
+	     
+		 UiObject weiboProfile = new UiObject(new UiSelector().description("Profile"));
+		 weiboProfile.clickAndWaitForNewWindow();
+		 
+		 UiObject weiboSettings = new UiObject(new UiSelector().description("Settings"));
+		 weiboSettings.clickAndWaitForNewWindow();
+		 
+		 UiObject clearcache  = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/cleanCacheLayout"));
+		 clearcache.clickAndWaitForNewWindow();  
+		 
+		 UiObject clearOk  = new UiObject(new UiSelector().text("OK"));
+		 if(clearOk.exists()){
+			 clearOk.click();  
 		 }
+		 getUiDevice().pressBack();
 		 
-		 UiObject logintext = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/etLoginUsername"));
-		 logintext.clickAndWaitForNewWindow(); 
-		 	 
-		 UiObject clearbutton = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/login_user_tips_btn"));//点击输入账号的清除叉叉
-		 clearbutton.clickAndWaitForNewWindow();
+		 getUiDevice().pressHome();
+		          
+		   
+	     // 打开 蘑菇街
+	     try {
+	         Runtime.getRuntime().exec("am start -n com.mogujie/.index.MGInitAct");
+
+	     } catch (IOException e) {
+				e.printStackTrace();
+	     }
+	     //等待10秒  
+	     try {  
+	         Thread.sleep(10000);  
+	     } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+	     }  
+
+	     UiObject mogujieFollow = new UiObject(new UiSelector().resourceId("com.mogujie:string/follow"));
+		 mogujieFollow.clickAndWaitForNewWindow();
 		 
-		 //输入用户名，密码
-		 logintext.setText("1229480203@qq.com");
+		 UiObject mogujieTriple = new UiObject(new UiSelector().resourceId("com.mogujie:string/triple"));
+		 mogujieTriple.clickAndWaitForNewWindow();
 		 
-		 UiObject Pwdtext = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/etPwd"));
-		 Pwdtext.setText("whlg0902???");
-		 // m登录
-		 UiObject Loginbutton = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/bnLogin")); 
-		 Loginbutton.clickAndWaitForNewWindow();
-		
-		 // 判断是否弹出验证码输入框
-		 UiObject captcha = new UiObject(new UiSelector().text("Please enter the captcha")); 	
-		 if(captcha.exists()){
-			 UiObject calcelbutton = new UiObject(new UiSelector().text("Cancel")); 
-			 calcelbutton.clickAndWaitForNewWindow();
-		 }else{
-			 //成功进入微博
-			 // 下拉刷新
-			 getUiDevice().swipe(width/2, 0, width/2, height, 5);
-			 //等待5秒  
+		 UiObject shangyi = new UiObject(new UiSelector().resourceId("com.mogujie:id/rl_category1"));
+		 shangyi.clickAndWaitForNewWindow();
+		 
+		 
+		 UiObject themeone =  new UiObject(new UiSelector().resourceId("com.mogujie:id/fastfashion_theme_1"));
+		 themeone.clickAndWaitForNewWindow();
+		 // 最新
+		 UiObject latest =  new UiObject(new UiSelector().resourceId("com.mogujie:id/latest"));
+		 latest.clickAndWaitForNewWindow();
+		 //等待1秒  
+	     try {  
+	         Thread.sleep(1000);  
+	     } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+	     }  
+		 	     
+	     UiObject RecyclerView = new UiObject(new UiSelector().className("android.support.v7.widget.RecyclerView"));
+	     UiObject oneItem = RecyclerView.getChild(new UiSelector().index(0));
+	     oneItem.clickAndWaitForNewWindow();
+	     
+	     //UiScrollable goodsdetail = new UiScrollable(new UiSelector().scrollable(true));  
+
+	     //UiObject detailList = goodsdetail.getChild(new UiSelector().resourceId("com.mogujie:id/goods_detail_list"));
+	     // 滑屏？
+	     
+	     
+	     
+	     UiObject detailList = new UiObject(new UiSelector().resourceId("com.mogujie:id/goods_detail_list"));
+	     UiObject listItem =  detailList.getChild(new UiSelector().index(1));
+	     
+	     
+	     
+	     UiObject buy_panel = listItem.getChild(new UiSelector().index(0));
+	     
+	     UiObject addtocart = buy_panel.getChild(new UiSelector().resourceId("com.mogujie:id/detail_add_to_cart_btn"));  
+	     addtocart.click();
+	     // 检测不出弹出框。why？
+	     getUiDevice().pressBack();
+	     
+	     UiObject cart = new UiObject(new UiSelector().resourceId("com.mogujie:id/detail_shopping_cart"));
+		 cart.clickAndWaitForNewWindow();
+	     
+		 getUiDevice().pressBack();
+		 getUiDevice().pressBack();
+		 getUiDevice().pressBack();
+		 
+	     UiObject slidetoogle = new UiObject(new UiSelector().resourceId("com.mogujie:id/slide_toogle"));
+	     slidetoogle.click();
+	     
+	     UiObject logininfo = new UiObject(new UiSelector().resourceId("com.mogujie:id/login_info"));
+	     logininfo.clickAndWaitForNewWindow();
+	     
+	     UiObject nickname = new UiObject(new UiSelector().resourceId("com.mogujie:id/user_info_nick_name_layout"));
+	     nickname.clickAndWaitForNewWindow();
+	     
+	     UiObject nicknametext = new UiObject(new UiSelector().resourceId("com.mogujie:id/username_edit"));
+	     nicknametext.clearTextField();
+	     nicknametext.setText("Emma_Kong");
+	     UiObject saveButton = new UiObject(new UiSelector().resourceId("com.mogujie:id/right_btn"));
+	     saveButton.click();     
+	     getUiDevice().pressBack();
+	     
+	     UiObject settinglist = new UiObject(new UiSelector().resourceId("com.mogujie:id/setting_list"));
+	     UiObject memberhome = settinglist.getChild(new UiSelector().index(7));
+	     memberhome.clickAndWaitForNewWindow();
+	     
+	     UiScrollable mymember = new UiScrollable(new UiSelector().scrollable(true));  
+
+	     UiObject signin = mymember.getChild(new UiSelector().index(3));  
+	     signin.clickAndWaitForNewWindow();
+	     getUiDevice().pressBack();
+	     getUiDevice().pressBack();
+	     
+	     UiObject myorder = settinglist.getChild(new UiSelector().index(1));
+	     myorder.clickAndWaitForNewWindow();
+	     
+	     getUiDevice().pressBack();
+	     getUiDevice().pressBack();
+	     
+	     getUiDevice().pressHome();
+	     
+		 try {
+	         Runtime.getRuntime().exec("am start -n com.bbk.appstore/.ui.AppStore");
+
+	     } catch (IOException e) {
+				e.printStackTrace();
+	     }
+		 //等待5秒  
+	     try {  
+	         Thread.sleep(5000);  
+	     } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+	     }  
+	     
+	     UiObject search = new UiObject(new UiSelector().resourceId("com.bbk.appstore:id/key_label"));
+	     search.setText("QQ");	     
+	     //等待1秒  
+	     try {  
+	         Thread.sleep(1000);  
+	     } catch (InterruptedException e1) {  
+	         e1.printStackTrace();  
+	     }  
+	     
+	     UiObject searchresult = new UiObject(new UiSelector().resourceId("com.bbk.appstore:id/package_list_item_info_layout"));
+	     // 捕获 下载 或 打开  按钮
+	     UiObject downButton =  searchresult.getChild(new UiSelector().resourceId("com.bbk.appstore:id/download_status"));  
+	     UiObject openButton =  searchresult.getChild(new UiSelector().resourceId("com.bbk.appstore:id/open_status")); 
+	     if(downButton.exists()){
+	    	 downButton.click();
+	    	 
+	    	 UiObject downloadContainer = new UiObject(new UiSelector().resourceId("com.bbk.appstore:id/download_container"));
+	    	 downloadContainer.clickAndWaitForNewWindow();
+	    	 
+	    	 UiObject downloadingItems = new UiObject(new UiSelector().resourceId("com.bbk.appstore:id/downloading_item"));
+	    	 UiObject downloadButton = downloadingItems.getChild(new UiSelector().index(5)); 
+	         downloadButton.click();
+	    	 
+	    	//等待3秒  
 		     try {  
-		         Thread.sleep(5000);  
+		         Thread.sleep(3000);  
 		     } catch (InterruptedException e1) {  
 		         e1.printStackTrace();  
-		     }          
-			 
-			 UiObject rltitle  = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitleBack"));
-			 rltitle.clickAndWaitForNewWindow();
-			//等待5秒  
-		     try {  
-		         Thread.sleep(5000);  
-		     } catch (InterruptedException e1) {  
-		         e1.printStackTrace();  
-		     }  
+		     }
+	    	 
+		     downloadButton.click();
+		     
+		     UiObject indicator = downloadingItems.getChild(new UiSelector().index(6)); 
+		     indicator.clickAndWaitForNewWindow();
+		     
+		     UiObject downloadcancel = new UiObject(new UiSelector().resourceId("com.bbk.appstore:id/cancel_layout"));
+		     downloadcancel.click();
+		     
+		     getUiDevice().pressBack();
 		     getUiDevice().pressBack();
 		     
-		     UiObject Profile = new UiObject(new UiSelector().description("Profile"));
-		     Profile.clickAndWaitForNewWindow();
-		     // 退出登录
-		     UiObject settings = new UiObject(new UiSelector().description("Setting"));
-		     settings.clickAndWaitForNewWindow();
-		     
-		     UiObject account = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/accountLayout"));
-		     account.clickAndWaitForNewWindow();
-		     
-		     UiObject Loginout = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/exitAccountContent"));
-		     Loginout.clickAndWaitForNewWindow();
-		     
-		     UiObject Okbutton = new UiObject(new UiSelector().text("OK"));
-		     Okbutton.clickAndWaitForNewWindow();
-		     
 		     getUiDevice().pressHome();
-		         
-			 
-		 }
-		 
-		// 滑至下一 屏
-	     //getUiDevice().swipe(0, height/2, width, height/2, 2); 
-	     
-	     // 打开微博
-	   //  UiObject weiboApp = appview.getChildByText(new UiSelector().className(TextView.class.getName()),"Weibo");
-		// weiboApp.clickAndWaitForNewWindow();
-		 
-		 
-		 //getUiDevice().pressHome(); 
-		 
-	     
-	     
-	 
+		     
+		         	 
+	     }else if(openButton.exists()){
+	    	 openButton.click();
+	     }
+	    		 
 	 }
 
 }
