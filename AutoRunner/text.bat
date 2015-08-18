@@ -30,4 +30,18 @@ adb logcat -v time -b events
 
 adb logcat -v time -s AndroidRuntime
 
+com.android.settings/.Settings
+com.bbk.appstore/.ui.AppStore
+com.android.bbkmusic/.WidgetToTrackActivity
+com.tencent.mobileqq/.activity.SplashActivity
+com.tencent.mm/.ui.LauncherUI
+com.sina.weibo/.SplashActivity
+com.sina.weibo/.MainTabActivity
+com.vivo.browser/.BrowserActivity
+com.android.camera/.CameraActivity
+com.android.VideoPlayer/.VideoPlayer
+com.vivo.gallery/com.android.gallery3d.vivo.GalleryTabActivity
+com.mogujie/.index.MGInitAct
 
+
+AppStoreOperation
