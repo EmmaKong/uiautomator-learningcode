@@ -4,7 +4,6 @@ D:
 
 cd %ANDROID_HOME%\tools
  
- 
 android create uitest-project -n AutoRunner -t 1 -p D:\Develop\android\UiAutomator
  
 cd D:\Develop\android\UiAutomator
@@ -45,3 +44,8 @@ com.mogujie/.index.MGInitAct
 
 
 AppStoreOperation
+iMusicOperation
+
+
+
+Error while obtaining UI hierarchy XML file: com.android.ddmlib.SyncException: Remote object doesn't exist!

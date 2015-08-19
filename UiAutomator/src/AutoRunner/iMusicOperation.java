@@ -41,8 +41,9 @@ public class iMusicOperation extends UiAutomatorTestCase {
 		
 		
 		
-		
 	}
+	
+	
 	
 	private void openiMusic() throws UiObjectNotFoundException{
 		

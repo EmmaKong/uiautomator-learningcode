@@ -124,8 +124,7 @@ public class AppStoreOperation extends UiAutomatorTestCase {
 		    
 		    getUiDevice().pressBack();
 		    getUiDevice().pressBack();
-		    
-		    		
+		    	    		
 		}
 		
 		

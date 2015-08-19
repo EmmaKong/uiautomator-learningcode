@@ -209,9 +209,9 @@ public class Test1 extends UiAutomatorTestCase {
 	     // UiScrollable, 滑到指定位置
 	     UiScrollable goodsdetails = new UiScrollable(new UiSelector().scrollable(true));  
 	     goodsdetails.scrollIntoView(new UiSelector().resourceId("com.mogujie:id/detail_add_to_cart_btn"));  // 滚动到条件元素所在位置，并且尽量让其居于屏幕中央	      
-	    //等待2秒  
+	    //等待5秒  
 	     try {  
-	         Thread.sleep(2000);  
+	         Thread.sleep(5000);  
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
 	     }  
@@ -219,14 +219,14 @@ public class Test1 extends UiAutomatorTestCase {
 	
 	     addtocart.click();
 	     
-	     //等待5秒  
+	     //等待2秒  
 	     try {  
-	         Thread.sleep(5000);  
+	         Thread.sleep(2000);  
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
 	     }  
 	     
-	     // 检测不出弹出框。why？
+	     // 检测不出弹出框的内容。why？
 	     getUiDevice().pressBack();
 	     
 	     UiObject cart = new UiObject(new UiSelector().resourceId("com.mogujie:id/detail_shopping_cart"));
@@ -245,13 +245,18 @@ public class Test1 extends UiAutomatorTestCase {
 	     
 	     UiObject nickname = new UiObject(new UiSelector().resourceId("com.mogujie:id/user_info_nick_name_layout"));
 	     nickname.clickAndWaitForNewWindow();
-	     
+	     // 修改昵称
 	     UiObject nicknametext = new UiObject(new UiSelector().resourceId("com.mogujie:id/username_edit"));
-	     nicknametext.click();
-	     nicknametext.clearTextField();
-	     nicknametext.setText("Emma_Kong");
-	     UiObject saveButton = new UiObject(new UiSelector().resourceId("com.mogujie:id/right_btn"));
-	     saveButton.click();     
+	     if(nicknametext.getText() != "Emma_Kong"){
+	    	 //nicknametext.click();
+	    	 nicknametext.clearTextField();
+	    	 nicknametext.setText("Emma_Kong");
+	    	 UiObject saveButton = new UiObject(new UiSelector().resourceId("com.mogujie:id/right_btn"));
+	    	 saveButton.click();
+	     
+	     }else{
+	    	 getUiDevice().pressBack();
+	     }
 	     getUiDevice().pressBack();
 	     
 	     UiObject settinglist = new UiObject(new UiSelector().resourceId("com.mogujie:id/setting_list"));
