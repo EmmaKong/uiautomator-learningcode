@@ -35,12 +35,14 @@ com.android.bbkmusic/.WidgetToTrackActivity
 com.tencent.mobileqq/.activity.SplashActivity
 com.tencent.mm/.ui.LauncherUI
 com.sina.weibo/.SplashActivity
-com.sina.weibo/.MainTabActivity
 com.vivo.browser/.BrowserActivity
 com.android.camera/.CameraActivity
 com.android.VideoPlayer/.VideoPlayer
 com.vivo.gallery/com.android.gallery3d.vivo.GalleryTabActivity
 com.mogujie/.index.MGInitAct
+com.baidu.searchbox/.SplashActivity
+com.qiyi.video/.WelcomeActivity
+
 
 
 AppStoreOperation

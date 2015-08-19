@@ -1,7 +1,9 @@
 D:\Develop\android\UiAutomator\bin\classes.dex : \
+D:\Develop\android\UiAutomator\bin\classes\AutoRunner\AiqiyiOperation.class \
 D:\Develop\android\UiAutomator\bin\classes\AutoRunner\AlbumsOperation.class \
 D:\Develop\android\UiAutomator\bin\classes\AutoRunner\AppStoreOperation.class \
 D:\Develop\android\UiAutomator\bin\classes\AutoRunner\baiduOperation.class \
+D:\Develop\android\UiAutomator\bin\classes\AutoRunner\CameraOperation$1.class \
 D:\Develop\android\UiAutomator\bin\classes\AutoRunner\CameraOperation.class \
 D:\Develop\android\UiAutomator\bin\classes\AutoRunner\FilemanagerOperation.class \
 D:\Develop\android\UiAutomator\bin\classes\AutoRunner\iMusicOperation.class \
