@@ -10,6 +10,8 @@ import com.android.uiautomator.core.UiScrollable;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
+
+
 public class WeiboOperation extends UiAutomatorTestCase {
 	
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
@@ -21,15 +23,13 @@ public class WeiboOperation extends UiAutomatorTestCase {
 			 
 		scanHomepage();
 			 
-		//scanFriendcircle();
+		scanFriendcircle();
 		
-		//scanMyWeibo();
+		scanMyWeibo();
+		
 		shareSomething();
 		
 		clearCache();
-		
-		
-		
 		
 			
 	}
@@ -70,25 +70,23 @@ public class WeiboOperation extends UiAutomatorTestCase {
 	}
 		
 	private void scanHomepage() throws UiObjectNotFoundException{
+		//int height = getUiDevice().getDisplayHeight();
+		int width = getUiDevice().getDisplayWidth();
 			
-	//	UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));
-			
-	//	rltitlemiddle.click();
+		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));	
+		rltitlemiddle.click();
 			
 	//	UiObject Homepage = new UiObject(new UiSelector().text("Homepage"));
 	//	Homepage.clickAndWaitForNewWindow();
+		sleep(2000);
+		getUiDevice().click(width/2, 250);
+		
 		UiScrollable listview = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser").scrollable(true));
 		if(listview.exists()){
-			while(true){
 				
-				//listview.scrollForward(); // 一直往下滑，停不下来
-				
-				listview.scrollIntoView(new UiObject(new UiSelector().textContains("chuby1tubby")));				
-				break;  //  跳出循环
-				
-			}
-			
-			
+			//listview.scrollForward(); // 一直往下滑，停不下来
+			//listview.scrollForward(100);
+			listview.scrollIntoView(new UiObject(new UiSelector().textContains("chuby1tubby")));					
 		}
 		
 		sleep(2000);
@@ -96,44 +94,50 @@ public class WeiboOperation extends UiAutomatorTestCase {
 	}
 		
 	private void scanFriendcircle() throws UiObjectNotFoundException{
-		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));
+		
+		//int height = getUiDevice().getDisplayHeight();
+		int width = getUiDevice().getDisplayWidth();
 			
+		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));	
 		rltitlemiddle.click();
 			
-		UiObject Friendcircle = new UiObject(new UiSelector().text("Friends Circle"));
-		Friendcircle.clickAndWaitForNewWindow();
-		
-		UiScrollable listview = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser").scrollable(true));
-		if(listview.exists()){
-			while(true){
+		//UiObject Friendcircle = new UiObject(new UiSelector().text("Friends Circle"));
+		//Friendcircle.clickAndWaitForNewWindow();
+		sleep(2000);
+		getUiDevice().click(width/2, 370);
 				
-				listview.scrollIntoView(new UiObject(new UiSelector().textContains("Asural_Girl")));
-				// 向下滚动，知道遇到 包含有 Asural_Girl字样的文本			
-			}	
+		UiScrollable listview = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser").scrollable(true));
+		if(listview.exists()){	
+			listview.scrollIntoView(new UiObject(new UiSelector().textContains("Asura_Girl")));
+			// 向下滚动，知道遇到 包含有 Asural_Girl字样的文本		
+			
 		}
 		
-			
+		sleep(2000);	
 	}
 	
 	
 	private void scanMyWeibo() throws UiObjectNotFoundException{
-		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));
+		//int height = getUiDevice().getDisplayHeight();
+		int width = getUiDevice().getDisplayWidth();
 			
+		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));		
 		rltitlemiddle.click();
 			
-		UiObject Myweibo = new UiObject(new UiSelector().text("My Weibo"));
-		Myweibo.clickAndWaitForNewWindow();
+		//UiObject Myweibo = new UiObject(new UiSelector().text("My Weibo"));
+		//Myweibo.clickAndWaitForNewWindow();
+		sleep(2000);
+		getUiDevice().click(width/2, 575);
 		
-		UiScrollable listview = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser").scrollable(true));
-		if(listview.exists()){
-			while(true){
-				
-				listview.scrollForward();  // 滚动到底
+		UiScrollable listView = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser"));
+		if(listView.exists()){
 			
-			}
-			
+			//listView.scrollForward();    // 抛出异常，why?
+			// 滚动到底
+			listView.scrollIntoView(new UiObject(new UiSelector().textContains("Oh Yeah")));
 			
 		}
+		sleep(2000);
 			
 	}
 	
