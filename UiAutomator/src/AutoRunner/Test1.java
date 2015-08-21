@@ -5,6 +5,7 @@ package AutoRunner;
 
 import java.io.IOException;
 
+
 //import android.widget.TextView;
 //import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -248,8 +249,13 @@ public class Test1 extends UiAutomatorTestCase {
 	     // ÐÞ¸ÄêÇ³Æ
 	     UiObject nicknametext = new UiObject(new UiSelector().resourceId("com.mogujie:id/username_edit"));
 	     if(nicknametext.getText() != "Emma_Kong"){
-	    	 //nicknametext.click();
-	    	 nicknametext.clearTextField();
+	    	 String oldname = nicknametext.getText();
+	    	 nicknametext.clickBottomRight();
+	     	 for (int i = 0; i < oldname.length(); i++) {
+	     		 getUiDevice().pressDelete();
+	     	   
+	     	 }
+	    	 //nicknametext.clearTextField();
 	    	 nicknametext.setText("Emma_Kong");
 	    	 UiObject saveButton = new UiObject(new UiSelector().resourceId("com.mogujie:id/right_btn"));
 	    	 saveButton.click();
