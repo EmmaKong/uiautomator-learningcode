@@ -6,17 +6,18 @@ import android.os.RemoteException;
 
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
+import com.android.uiautomator.core.UiScrollable;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
-public class AiqiyiOperation extends UiAutomatorTestCase {
+public class AiqiyiOperation extends UiAutomatorTestCase{
 	
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		openAiqiyi();
 		
-		searchandWatchVideo("jixiantiaozhan");
+		searchandDownloadVideo("woqushangxue");
 		
-		
+		searchandWatchVideo("jixiantiaozhan");	
 		
 	}
 	
@@ -53,12 +54,29 @@ public class AiqiyiOperation extends UiAutomatorTestCase {
 		if(download_btn.exists()){
 			download_btn.click();
 			
-			UiObject EpisodeAdapterTxt = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/playControlEpisodeAdapterTxt"));
+			UiObject rateChoose = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/rate"));
+			rateChoose.click();
+			UiObject rate_gq = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/rate_gq"));  // Á÷³©
+			if(rate_gq.exists()){
+				rate_gq.click();
+			}
 			
-			UiObject videoListView = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/listview").className("android.widget.ListView"));
+			//UiObject EpisodeAdapterTxt = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/playControlEpisodeAdapterTxt"));
 			
+			UiScrollable videoListView = new UiScrollable(new UiSelector().resourceId("com.qiyi.video:id/listview").className("android.widget.ListView"));
+			if(videoListView.exists()){
+				UiObject selectAll = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/select_all"));
+				UiObject download = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/download"));
+				
+				selectAll.click();
+				sleep(1000);
+				download.click();
+				
+			}
+				
 		}
-		
+		getUiDevice().pressBack();
+		getUiDevice().pressBack();
 		
 	}
 	
