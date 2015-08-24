@@ -17,7 +17,10 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		
 		searchandDownloadVideo("woqushangxue");
 		
-		searchandWatchVideo("jixiantiaozhan");	
+		//searchandWatchVideo("jixiantiaozhan");	
+		
+		watchDownloadedVideo();
+		// 观看在线 和缓存 二选一
 		
 	}
 	
@@ -60,9 +63,7 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 			if(rate_gq.exists()){
 				rate_gq.click();
 			}
-			
-			//UiObject EpisodeAdapterTxt = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/playControlEpisodeAdapterTxt"));
-			
+						
 			UiScrollable videoListView = new UiScrollable(new UiSelector().resourceId("com.qiyi.video:id/listview").className("android.widget.ListView"));
 			if(videoListView.exists()){
 				UiObject selectAll = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/select_all"));
@@ -70,8 +71,7 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 				
 				selectAll.click();
 				sleep(1000);
-				download.click();
-				
+				download.click();				
 			}
 				
 		}
@@ -190,14 +190,13 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		
 		UiObject searchSubmit = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phoneSearchSubmit"));
 		searchSubmit.clickAndWaitForNewWindow();
-		
-		
+				
 		UiObject watchnow = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phone_search_result_adapter_first_btn"));
 		if(watchnow.exists()){
 			watchnow.click();
 		}
 			
-		sleep(2000);  // 广告时间
+		sleep(10000);  // 广告时间
 		landscapeSwitch();   // 全屏
 		//stopbeginSwitch();  // 暂停
 		sleep(2000);
@@ -213,9 +212,35 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		sleep(2000); 
 		stopbeginSwitch();  // 开始
 		
-		
+		//程序结束后，视频播放仍然继续
 	}
 	
+    private void watchDownloadedVideo() throws UiObjectNotFoundException{  
+    	
+    	UiObject downloadTitle = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/titleDownloadLayout"));
+    	downloadTitle.clickAndWaitForNewWindow();
+    	
+    	UiObject downloadList = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list"));
+    	int num = downloadList.getChildCount();
+    	
+    	UiObject oneitems = downloadList.getChild(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list_item_layout").className("android.widget.RelativeLayout").index(num-1));
+    	oneitems.clickAndWaitForNewWindow();
+    	
+    	UiObject downloadItemList = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list"));
+    	int itemnum = downloadItemList.getChildCount();
+    	UiObject oneitem = downloadItemList.getChild(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list_item_layout").className("android.widget.RelativeLayout").index(itemnum-1));
+    	oneitem.clickAndWaitForNewWindow();
+    	//只能全屏观看
+    	
+    	sleep(5000); 
+    	stopbeginSwitch(); //暂停
+		sleep(2000); 
+		stopbeginSwitch();  // 开始
+		
+		//程序结束后，视频播放仍然继续
+    	
+    }
+    
 	
 
 }
