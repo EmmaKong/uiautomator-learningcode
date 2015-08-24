@@ -62,7 +62,9 @@ public class QQOperation extends UiAutomatorTestCase {
 		UiObject QQtabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 				
 		UiObject message = QQtabs.getChild(new UiSelector().index(0).className("android.widget.RelativeLayout"));
-		message.clickAndWaitForNewWindow();
+		if(!message.isSelected()){
+			message.clickAndWaitForNewWindow();
+		}
 		
 		UiObject recentchatList = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/recent_chat_list"));
 		
@@ -174,8 +176,10 @@ public class QQOperation extends UiAutomatorTestCase {
 		UiObject QQtabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		
 		UiObject dynamic = QQtabs.getChild(new UiSelector().index(2).className("android.widget.FrameLayout"));
-		dynamic.clickAndWaitForNewWindow();
-		sleep(1000);
+		if(!dynamic.isSelected()){
+			dynamic.clickAndWaitForNewWindow();
+			sleep(1000);
+		}
 		
 		UiObject qZoneEntry = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/qzone_feed_entry"));
 		qZoneEntry.clickAndWaitForNewWindow();
@@ -231,7 +235,9 @@ public class QQOperation extends UiAutomatorTestCase {
 		UiObject QQtabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 			
 		UiObject contacts = QQtabs.getChild(new UiSelector().index(1).className("android.widget.RelativeLayout"));
-		contacts.clickAndWaitForNewWindow();
+		if(!contacts.isSelected()){
+			contacts.clickAndWaitForNewWindow();
+		}
 		update();
 		
 		UiObject addButton = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/ivTitleBtnRightText"));

@@ -12,7 +12,7 @@ ant build
  
 adb push D:\Develop\android\UiAutomator\bin\AutoRunner.jar data/local/tmp
  
-adb shell uiautomator runtest AutoRunner.jar -c AutoRunner.QQOperation
+adb shell uiautomator runtest AutoRunner.jar -c AutoRunner.AlbumsOperation
 
 
 
