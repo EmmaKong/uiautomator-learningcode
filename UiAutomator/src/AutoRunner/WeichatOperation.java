@@ -15,11 +15,15 @@ public class WeichatOperation extends UiAutomatorTestCase {
 		
 		openWeiChat();
 		
+		readUnreadmsg();
+		
 		scanMyPosts();
 		
 		scanFriendCircle(10);
 		
 		saySomething("JUST FOR TESTING!");
+		
+		readUnreadSubscription(); 
 		
 	}
 	
@@ -138,7 +142,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 		if(sendButton.exists()){
 			sendButton.click();		
 		}	
-		System.out.println("I send a message!");
+		System.out.println("Send a message successfully!");
 		getUiDevice().pressBack();
 		
 	}
@@ -184,25 +188,23 @@ public class WeichatOperation extends UiAutomatorTestCase {
 	    chats.clickAndWaitForNewWindow();
 	
 		UiObject recentchatList = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/aw6"));
-		
 		int numofchat = recentchatList.getChildCount();
-		recentchatList.swipeDown(1);
-		for(int i = 1; i < numofchat; i++){
+		
+		for(int i = 0; i < numofchat; i++){
 			
-			sleep(1000);
-			UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").resourceId("com.tencent.mm:id/a4s"));			
+			sleep(2000);
+			UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").
+					resourceId("com.tencent.mm:id/a4s").index(i + 6));			
 			UiObject unreadIndi_sub = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/a4t"));	
 			UiObject Subscription = messageLayout.getChild(new UiSelector().text("Subscription Accounts"));
-			if(Subscription.exists()){  // ¶©ÔÄºÅÐÅÏ¢
+			if(Subscription.exists()){  //¶©ÔÄºÅÐÅÏ¢
 				if(unreadIndi_sub.exists()){
+					System.out.println("There is unread Subscription!");
 					unreadIndi_sub.clickAndWaitForNewWindow();
-					
-					
-					
-				}
-				
-				
-			
+					sleep(2000);	
+					getUiDevice().pressBack();
+									
+				}						
 			}else{
 				UiObject unreadIndi = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/g2"));
 				if(unreadIndi.exists()){
@@ -221,7 +223,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 						}
 					}
 					
-					sendMessage("hahahah!");
+					sendMessage("hahaha!");
 					sleep(1000);
 					getUiDevice().pressBack();
 					
@@ -231,6 +233,51 @@ public class WeichatOperation extends UiAutomatorTestCase {
 			
 		}
 				
+	}
+	
+	
+	private void readUnreadSubscription() throws UiObjectNotFoundException{   // ÔÄ¶Á ¶©ÔÄºÅ
+		
+		UiObject chats = new UiObject(new UiSelector().text("Chats"));
+	    chats.clickAndWaitForNewWindow();
+	    UiObject recentchatList = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/aw6"));
+	    UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").
+	    		resourceId("com.tencent.mm:id/a4s"));			
+		UiObject Subscription = messageLayout.getChild(new UiSelector().text("Subscription Accounts"));
+	
+		if(Subscription.exists()){  // ¶©ÔÄºÅÐÅÏ¢
+			
+			Subscription.clickAndWaitForNewWindow();	
+			sleep(1000);
+			
+			UiObject SubListView = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/bvl"));				
+		    if(SubListView.exists()){
+		    	int numofsub = SubListView.getChildCount();
+		    	System.out.println("There are " + numofsub + " Subscriptions!");
+				for(int i = 0; i < numofsub; i++){
+					UiObject subLayout = SubListView.getChild(new UiSelector().className("android.widget.LinearLayout").
+							resourceId("com.tencent.mm:id/a4s").index(i));			
+					UiObject unreadIndiSub = subLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/g2"));	
+					if(unreadIndiSub.exists()){
+						subLayout.clickAndWaitForNewWindow();
+						
+						sleep(2000);
+						
+						
+						
+						
+						
+						
+						getUiDevice().pressBack();
+								
+					}
+										
+				}		
+					
+			}
+		    
+		    getUiDevice().pressBack();			
+		}		
 	}
 	
 	
