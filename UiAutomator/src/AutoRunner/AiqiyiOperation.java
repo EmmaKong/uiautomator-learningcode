@@ -25,7 +25,7 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 	}
 	
 	
-	private void openAiqiyi() throws UiObjectNotFoundException{
+	void openAiqiyi() throws UiObjectNotFoundException{
 		
 		try {
 		    Runtime.getRuntime().exec("am start -n com.qiyi.video/.WelcomeActivity");
