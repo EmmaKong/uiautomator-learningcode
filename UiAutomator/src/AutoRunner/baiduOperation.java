@@ -20,6 +20,7 @@ public class baiduOperation extends UiAutomatorTestCase {
 		
 		changeSkin(10); 
 		
+		getUiDevice().pressHome();
 		
 	}
 	

@@ -18,6 +18,7 @@ public class FilemanagerOperation extends UiAutomatorTestCase {
 		
 		deleteAllApks();
 		
+		getUiDevice().pressHome();
 		
 	}
 	

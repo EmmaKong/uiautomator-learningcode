@@ -31,7 +31,8 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		
 		clearCache();
 		
-			
+		getUiDevice().pressHome();
+					
 	}
 
 		

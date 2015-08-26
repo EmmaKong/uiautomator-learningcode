@@ -21,7 +21,8 @@ public class AppStoreOperation extends UiAutomatorTestCase {
 		 sleep(1000);
 		 
 		 updateApps();
-		
+		 
+		 getUiDevice().pressBack();
 		
 	}
 	

@@ -19,6 +19,7 @@ public class CameraOperation extends UiAutomatorTestCase {
 		
 		takeVideoWithTime(5);   // Â¼ÖÆ5Ãë
 		
+		getUiDevice().pressHome();
 		
 	}
 	

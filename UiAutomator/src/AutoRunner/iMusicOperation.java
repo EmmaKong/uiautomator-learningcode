@@ -39,6 +39,7 @@ public class iMusicOperation extends UiAutomatorTestCase {
 			
 		}
 		
+		getUiDevice().pressHome();
 		
 	}
 	

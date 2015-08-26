@@ -25,6 +25,8 @@ public class QQOperation extends UiAutomatorTestCase {
 		
 		addsomeone("772097770");
 		
+		getUiDevice().pressHome();
+		
 	}
 	
 	private void openQQ() throws UiObjectNotFoundException{

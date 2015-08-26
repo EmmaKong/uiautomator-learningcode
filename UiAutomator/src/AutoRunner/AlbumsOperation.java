@@ -3,6 +3,7 @@ package AutoRunner;
 import java.io.IOException;
 
 import android.os.RemoteException;
+import android.graphics.Rect;
 
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
@@ -15,6 +16,8 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 		openAlbums();
 		
 		scanGallery();
+		
+		getUiDevice().pressHome();
 		
 	}
 	
@@ -34,26 +37,54 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 	     }  			
 	}
 	
+	private int getPhotoNum() throws UiObjectNotFoundException{
+		
+		UiObject galleryTabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
+		UiObject Albumstabs = galleryTabs.getChild(new UiSelector().resourceId("com.vivo.gallery:id/tab_text").text("All albums"));
+		if(!Albumstabs.isSelected()){
+			Albumstabs.clickAndWaitForNewWindow();			
+		}	
+		
+		UiObject allAlbulmsList = new UiObject(new UiSelector().resourceId("com.vivo.gallery:id/dreamway_folder_albumset_list"));
+		UiObject PhotosByCamera = allAlbulmsList.getChild(new UiSelector().className("android.widget.RelativeLayout").index(0));
+		UiObject countInfo = PhotosByCamera.getChild(new UiSelector().resourceId("com.vivo.gallery:id/dreamway_folder_count"));
+		int num =  Integer.valueOf(countInfo.getText());
+	
+		System.out.println("There are: " + num + " photos taken by camera!");
+		return num;
+	}
+	
+	
 	private void scanGallery() throws UiObjectNotFoundException{
+		
+		int allNum = getPhotoNum();
 		
 		UiObject galleryTabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		UiObject Photostabs = galleryTabs.getChild(new UiSelector().resourceId("com.vivo.gallery:id/tab_text").text("Photos"));
 		if(!Photostabs.isSelected()){
 			Photostabs.clickAndWaitForNewWindow();			
-		}
-		
+		}		
 		// uiautomatorviewer 无法识别相册内内容
 		// 只能随意点击查看
+		UiObject titleView = new UiObject(new UiSelector().resourceId("com.vivo.gallery:id/title_view_layout"));
+		Rect rect = titleView.getBounds();
 		
-		UiObject gallaryView = new UiObject(new UiSelector().resourceId("com.vivo.gallery:id/gl_root_view"));
-		gallaryView.click();
+		int top = rect.bottom;		
+		int width = getUiDevice().getDisplayWidth();	
+		int height = getUiDevice().getDisplayHeight();
+		// 点击右上角的第一张图片
+		getUiDevice().click(width/8, top + width/8);
+		sleep(2000);
 		
+		for(int i = 0; i < allNum-1 ; i++){
+			getUiDevice().swipe( width-100, height/2, 100, height/2, 10);
+			sleep(1000);
+		}
 		
+		getUiDevice().pressBack();
 		
-		
-		
+		getUiDevice().pressBack(); // 回到顶端
+
 	}
-	
-	
 
 }
