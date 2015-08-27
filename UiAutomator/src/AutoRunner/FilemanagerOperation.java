@@ -2,8 +2,6 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.widget.ListView;
-
 import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
@@ -56,10 +54,13 @@ public class FilemanagerOperation extends UiAutomatorTestCase {
 	     
 	    UiObject apksItem = new UiObject(new UiSelector().text("Apks"));
 	    apksItem.clickAndWaitForNewWindow();
+	    
+	    UiObject noapks = new UiObject(new UiSelector().text("No apks"));
+	    if(!noapks.exists()){
 	     
-	    UiObject apksListView = new UiObject(new UiSelector().className(ListView.class.getName())); 
-	    int apksNum = apksListView.getChildCount();
-	    if(apksNum > 0){
+	    	//UiObject apksListView = new UiObject(new UiSelector().className(ListView.class.getName()).resourceId("com.android.filemanager:id/category_listView")); 
+	    
+	    
 	    	UiObject editButton = new UiObject(new UiSelector().className("android.widget.Button").text("Edit"));
 	    	editButton.click();
 	    	sleep(1000);
@@ -76,19 +77,59 @@ public class FilemanagerOperation extends UiAutomatorTestCase {
 	        	Okbutton.click();	        	
 	        }
 	    	
+	        System.out.println("Delete all Apk files!");
+	    }else{
+	    	
+	    	System.out.println("There exists no Apk files!");
 	    }
 	    sleep(1000);
 	    uiDevice.pressBack();
-	    
-	     
-		
-		
+	   
 	}
 	
-	
+    void copyAllImages() throws UiObjectNotFoundException{
+    	
+    	UiObject CatagoryItem = new UiObject(new UiSelector().resourceId("com.android.filemanager:id/category_browse"));
+		UiObject CategoryView = new UiObject(new UiSelector().className("android.widget.TextView").text("Category"));
+		if(!CategoryView.exists()){
+			CatagoryItem.click();
+		}
+		
+		UiObject imagesItems = new UiObject(new UiSelector().text("Images"));
+		imagesItems.clickAndWaitForNewWindow();
+		
+		UiObject noimages = new UiObject(new UiSelector().text("No images"));
+	    if(!noimages.exists()){
+	    	    	
+	    	//UiObject imagesListView = new UiObject(new UiSelector().className(ListView.class.getName()).resourceId("com.android.filemanager:id/category_listView")); 
+		    
+		    UiObject editButton = new UiObject(new UiSelector().className("android.widget.Button").text("Edit"));
+		    editButton.click();
+		    sleep(1000);
+		    
+		    UiObject allButton = new UiObject(new UiSelector().className("android.widget.Button").text("All"));
+	    	allButton.click();
+	    	
+	    	UiObject copyButton = new UiObject(new UiSelector().className("android.widget.Button").text("Copy"));
+	        copyButton.click();
+	        sleep(1000);
+	    	
+	        UiObject pasteAll = new UiObject(new UiSelector().resourceId("com.android.filemanager:id/parseBtn").text("Paste all"));
+	        if(pasteAll.exists()){
+	        	
+	        	pasteAll.click();	        	
+	        }
+	        System.out.println("Copy all Image files!");
+		    	
+		}else{
+			
+			System.out.println("There exists no Image files!");
+		}
+	    sleep(1000);
+	    uiDevice.pressBack();
+		    	
+    }
+    
 
 }
-
-
-
 

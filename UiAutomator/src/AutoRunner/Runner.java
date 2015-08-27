@@ -63,6 +63,7 @@ public class Runner extends UiAutomatorTestCase {
 		FilemanagerOperation FileManager = new FilemanagerOperation(getUiDevice());
 		FileManager.openFilemanager();
 		FileManager.deleteAllApks();	
+		FileManager.copyAllImages();
 		getUiDevice().pressHome();
 		
 		
@@ -157,7 +158,7 @@ public class Runner extends UiAutomatorTestCase {
     	
     	
     	
-    	
+    
     	
     	
     	
