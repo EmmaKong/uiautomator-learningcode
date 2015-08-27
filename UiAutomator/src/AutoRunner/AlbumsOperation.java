@@ -93,7 +93,7 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 			uiDevice.swipe( width-100, height/2, 100, height/2, 10);
 			sleep(1000);
 		}
-		
+		System.out.println("Scan all photos successfully!");
 		uiDevice.pressBack();
 		
 		uiDevice.pressBack(); // »Øµ½¶¥¶Ë

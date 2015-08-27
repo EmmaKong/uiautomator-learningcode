@@ -48,7 +48,7 @@ public class Runner extends UiAutomatorTestCase {
     		 e1.printStackTrace();  
     	}  
      
-    	/*
+
     	AppStoreOperation AppStore = new AppStoreOperation(getUiDevice());
     	AppStore.openAppstore();
     	
@@ -65,7 +65,7 @@ public class Runner extends UiAutomatorTestCase {
 		FileManager.deleteAllApks();	
 		getUiDevice().pressHome();
 		
-		*/
+		
 		iMusicOperation iMusic = new iMusicOperation(getUiDevice());
 		iMusic.openiMusic();
 		UiObject nosongsIndicate = new UiObject(new UiSelector().resourceId("com.android.bbkmusic:id/nosongtext"));
@@ -139,6 +139,7 @@ public class Runner extends UiAutomatorTestCase {
 		Albums.scanGallery();	
 		getUiDevice().pressHome();
 		
+		
 		baiduOperation baidu = new baiduOperation(getUiDevice());		
 		baidu.openBaidu();		
 		baidu.searchSomething("haha");
@@ -147,7 +148,6 @@ public class Runner extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 		
 		
-    	
     	AiqiyiOperation Aiqiyi = new AiqiyiOperation(getUiDevice());
     	Aiqiyi.openAiqiyi();
 		Aiqiyi.searchandDownloadVideo("woqushangxue");	
@@ -161,9 +161,7 @@ public class Runner extends UiAutomatorTestCase {
     	
     	
     	
-       
-    
-        
+          
          
     }  
 }  

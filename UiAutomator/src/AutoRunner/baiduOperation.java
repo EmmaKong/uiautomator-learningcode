@@ -50,7 +50,7 @@ public class baiduOperation extends UiAutomatorTestCase {
 	         e1.printStackTrace();  
 	     }  	
 	     
-	     System.out.println("Open Baidu Browser!");
+	     System.out.println("Open BaiduBrowser!");
 	}
     
     void searchSomething(String some) throws UiObjectNotFoundException{

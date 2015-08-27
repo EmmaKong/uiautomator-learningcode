@@ -222,6 +222,8 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		landscapeSwitch(); // 退出全屏
 		sleep(2000); 
 		stopbeginSwitch();  // 开始
+		sleep(2000); 
+		landscapeSwitch(); // 全屏
 		
 		//程序结束后，视频播放仍然继续
 	}

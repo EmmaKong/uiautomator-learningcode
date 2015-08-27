@@ -201,48 +201,52 @@ public class WeichatOperation extends UiAutomatorTestCase {
 	
 		UiObject recentchatList = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/aw6"));
 		int numofchat = recentchatList.getChildCount();
-		
-		for(int i = 0; i < numofchat; i++){
+		if(numofchat > 0){
+			for(int i = 0; i < numofchat; i++){
 			
-			sleep(2000);
-			UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").
+				sleep(2000);
+				UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").
 					resourceId("com.tencent.mm:id/a4s").index(i + 6));			
-			UiObject unreadIndi_sub = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/a4t"));	
-			UiObject Subscription = messageLayout.getChild(new UiSelector().text("Subscription Accounts"));
-			if(Subscription.exists()){  //订阅号信息
-				if(unreadIndi_sub.exists()){
-					System.out.println("There is unread Subscription!");
-					unreadIndi_sub.clickAndWaitForNewWindow();
-					sleep(2000);	
-					uiDevice.pressBack();
+				UiObject unreadIndi_sub = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/a4t"));	
+				UiObject Subscription = messageLayout.getChild(new UiSelector().text("Subscription Accounts"));
+				if(Subscription.exists()){  //订阅号信息
+					if(unreadIndi_sub.exists()){
+						System.out.println("There is unread Subscription!");
+						unreadIndi_sub.clickAndWaitForNewWindow();
+						sleep(2000);	
+						uiDevice.pressBack();
 									
-				}						
-			}else{
-				UiObject unreadIndi = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/g2"));
-				if(unreadIndi.exists()){
-					unreadIndi.clickAndWaitForNewWindow();
+					}						
+				}else{
+					UiObject unreadIndi = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mm:id/g2"));
+					if(unreadIndi.exists()){
+						unreadIndi.clickAndWaitForNewWindow();
 					
-					UiScrollable messageListView = new UiScrollable(new UiSelector().resourceId("com.tencent.mm:id/tk").scrollable(true));
-					if(messageListView.exists()){
-						while(true){
-							messageListView.scrollBackward();
-							sleep(1000);
-							UiObject timestamp = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/ac"));
-							if(timestamp.exists()){
-								System.out.println("I have read the messages");
-								break;  // 退出循环
-							}	
+						UiScrollable messageListView = new UiScrollable(new UiSelector().resourceId("com.tencent.mm:id/tk").scrollable(true));
+						if(messageListView.exists()){
+							while(true){
+								messageListView.scrollBackward();
+								sleep(1000);
+								UiObject timestamp = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/ac"));
+								if(timestamp.exists()){
+									System.out.println("I have read the messages");
+									break;  // 退出循环
+								}	
+							}
 						}
-					}
 					
-					sendMessage("hahaha!");
-					sleep(1000);
-					uiDevice.pressBack();
+						sendMessage("hahaha!");
+						sleep(1000);
+						uiDevice.pressBack();
 					
-				}			
+					}			
 				
-			}	
+				}	
 			
+			}
+		}else{
+			
+			System.out.println("I have read the messages");
 		}
 				
 	}
