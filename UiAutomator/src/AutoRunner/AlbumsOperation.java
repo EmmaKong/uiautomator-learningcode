@@ -2,15 +2,19 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
+
+
+//import android.os.RemoteException;
 import android.graphics.Rect;
 
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class AlbumsOperation extends UiAutomatorTestCase {
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		
 		openAlbums();
@@ -20,8 +24,15 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 		
 	}
+	*/
 	
-	private void openAlbums() throws UiObjectNotFoundException{
+	UiDevice uiDevice;	
+	// 构造函数
+	public AlbumsOperation(UiDevice device) {
+        uiDevice = device;      
+    }
+	
+	void openAlbums() throws UiObjectNotFoundException{
 		
 		try {
 	         Runtime.getRuntime().exec("am start -n com.vivo.gallery/com.android.gallery3d.vivo.GalleryTabActivity");
@@ -34,10 +45,12 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 	         Thread.sleep(5000);  
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
-	     }  			
+	     } 
+	     System.out.println("Open Albums!");
+	     
 	}
 	
-	private int getPhotoNum() throws UiObjectNotFoundException{
+	int getPhotoNum() throws UiObjectNotFoundException{
 		
 		UiObject galleryTabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		UiObject Albumstabs = galleryTabs.getChild(new UiSelector().resourceId("com.vivo.gallery:id/tab_text").text("All albums"));
@@ -55,7 +68,7 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 	}
 	
 	
-	private void scanGallery() throws UiObjectNotFoundException{
+	void scanGallery() throws UiObjectNotFoundException{
 		
 		int allNum = getPhotoNum();
 		
@@ -70,20 +83,20 @@ public class AlbumsOperation extends UiAutomatorTestCase {
 		Rect rect = titleView.getBounds();
 		
 		int top = rect.bottom;		
-		int width = getUiDevice().getDisplayWidth();	
-		int height = getUiDevice().getDisplayHeight();
+		int width = uiDevice.getDisplayWidth();	
+		int height = uiDevice.getDisplayHeight();
 		// 点击右上角的第一张图片
-		getUiDevice().click(width/8, top + width/8);
+		uiDevice.click(width/8, top + width/8);
 		sleep(2000);
 		
 		for(int i = 0; i < allNum-1 ; i++){
-			getUiDevice().swipe( width-100, height/2, 100, height/2, 10);
+			uiDevice.swipe( width-100, height/2, 100, height/2, 10);
 			sleep(1000);
 		}
 		
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
-		getUiDevice().pressBack(); // 回到顶端
+		uiDevice.pressBack(); // 回到顶端
 
 	}
 

@@ -2,16 +2,15 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
-
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class iMusicOperation extends UiAutomatorTestCase {
-	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
-		
+//	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
+		/*
 		openiMusic();
 		UiObject nosongsIndicate = new UiObject(new UiSelector().resourceId("com.android.bbkmusic:id/nosongtext"));
 		if(nosongsIndicate.exists()){
@@ -42,10 +41,14 @@ public class iMusicOperation extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 		
 	}
+	*/
+	UiDevice uiDevice;	
+	// 构造函数
+	public iMusicOperation(UiDevice device) {
+        uiDevice = device;      
+    }
 	
-	
-	
-	private void openiMusic() throws UiObjectNotFoundException{
+	void openiMusic() throws UiObjectNotFoundException{
 		
 		try {
 	         Runtime.getRuntime().exec("am start -n com.android.bbkmusic/.WidgetToTrackActivity");
@@ -58,10 +61,12 @@ public class iMusicOperation extends UiAutomatorTestCase {
 	         Thread.sleep(5000);  
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
-	     }  			
+	     }  	
+	     
+	     System.out.println("Open iMusic!");
 	}
 	
-	private void SearchandDownloadSong(String songname) throws UiObjectNotFoundException{
+	void SearchandDownloadSong(String songname) throws UiObjectNotFoundException{
 		
 		UiObject iMusictabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		UiObject discover = iMusictabs.getChild(new UiSelector().index(4));
@@ -108,19 +113,21 @@ public class iMusicOperation extends UiAutomatorTestCase {
 		
 	}
 	
-	private void PlaySongRandomly() throws UiObjectNotFoundException{  //随机播放
+	void PlaySongRandomly() throws UiObjectNotFoundException{  //随机播放
 		UiObject iMusictabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		UiObject Songs = iMusictabs.getChild(new UiSelector().text("Songs").resourceId("android:id/title"));
 		Songs.clickAndWaitForNewWindow();
 		
 		UiObject shuffle = new UiObject(new UiSelector().resourceId("com.android.bbkmusic:id/shuffer_text"));
 		shuffle.click();
+		System.out.println("Play randomly!");
+		sleep(2000);
 		
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 	
 	}
 	
-	private void SearchandPlaySong(String songname) throws UiObjectNotFoundException{
+	void SearchandPlaySong(String songname) throws UiObjectNotFoundException{
 		
 		UiObject iMusictabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		UiObject Songs = iMusictabs.getChild(new UiSelector().text("Songs").resourceId("android:id/title"));
@@ -130,13 +137,14 @@ public class iMusicOperation extends UiAutomatorTestCase {
 		if(wantedsong.exists()){
 			System.out.println("Find the song: " + songname);
 			wantedsong.click();
-			getUiDevice().pressBack();
+			sleep(2000);
+			
+			uiDevice.pressBack();
 		}else{
+			
 			System.out.println("Cannot find the song: " + songname);
 		}
-		
-		
-		
+			
 	}
 	
 

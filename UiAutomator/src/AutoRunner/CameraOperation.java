@@ -2,15 +2,18 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
+//import android.os.RemoteException;
 
+
+
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class CameraOperation extends UiAutomatorTestCase {
-	
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		openCamera();
 		
@@ -22,9 +25,14 @@ public class CameraOperation extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 		
 	}
+	*/
+	UiDevice uiDevice;	
+	// ¹¹Ôìº¯Êý
+	public CameraOperation(UiDevice device) {
+        uiDevice = device;      
+    }
 	
-	
-	private void openCamera() throws UiObjectNotFoundException{
+	void openCamera() throws UiObjectNotFoundException{
 		
 		try {
 		    Runtime.getRuntime().exec("am start -n com.android.camera/.CameraActivity");
@@ -37,10 +45,12 @@ public class CameraOperation extends UiAutomatorTestCase {
 		    Thread.sleep(5000);  
 		} catch (InterruptedException e1) {  
 		    e1.printStackTrace();  
-		}  	
+		}  
+		
+		System.out.println("Open Camera!");
 	}
 	
-	private void takePhotoWithModule(String module) throws UiObjectNotFoundException{
+	void takePhotoWithModule(String module) throws UiObjectNotFoundException{
 		
 		UiObject setting = new UiObject(new UiSelector().resourceId("com.android.camera:id/other_setting_indicator"));
 		setting.clickAndWaitForNewWindow();
@@ -55,7 +65,7 @@ public class CameraOperation extends UiAutomatorTestCase {
 		
 	}
 	
-	private void takeVideoWithTime(int time) throws UiObjectNotFoundException{
+	void takeVideoWithTime(int time) throws UiObjectNotFoundException{
 		
 		UiObject videoButton = new UiObject(new UiSelector().resourceId("com.android.camera:id/video_shutter_button"));
 		videoButton.click();
@@ -65,7 +75,7 @@ public class CameraOperation extends UiAutomatorTestCase {
 		sleep(time*1000);
 		stopButton.click();
 		
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 	
 		
 	}

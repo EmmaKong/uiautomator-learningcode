@@ -2,8 +2,11 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
+//import android.os.RemoteException;
 
+
+
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiScrollable;
@@ -11,7 +14,7 @@ import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class AiqiyiOperation extends UiAutomatorTestCase{
-	
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		openAiqiyi();
 		
@@ -23,6 +26,13 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		// 观看在线 和缓存 二选一
 		
 	}
+	*/
+	
+	UiDevice uiDevice;	
+	// 构造函数
+	public AiqiyiOperation(UiDevice device) {
+        uiDevice = device;      
+    }
 	
 	
 	void openAiqiyi() throws UiObjectNotFoundException{
@@ -39,9 +49,10 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		} catch (InterruptedException e1) {  
 		    e1.printStackTrace();  
 		}  	
+		System.out.println("Open Aiyiqi!");
 	}
 	
-	private void searchandDownloadVideo(String some) throws UiObjectNotFoundException{
+	void searchandDownloadVideo(String some) throws UiObjectNotFoundException{
 		
 		UiObject searchText = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/titleIndexSearchImage"));
 		searchText.clickAndWaitForNewWindow();
@@ -75,12 +86,12 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 			}
 				
 		}
-		getUiDevice().pressBack();
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void landscapeSwitch() throws UiObjectNotFoundException{  // 全屏切换
+	void landscapeSwitch() throws UiObjectNotFoundException{  // 全屏切换
 		
 		UiObject landscapeButton = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/btn_tolandscape"));	
 		UiObject adslandscapeButton = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/btn_ads_tolandscape")); // 广告播放中
@@ -94,12 +105,12 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 				adslandscapeButton.click();	
 				System.out.println("switch to full screen!" );
 			}else{
-				getUiDevice().pressBack();
+				uiDevice.pressBack();
 				System.out.println("exit full screen!" );			
 			}
 		}else{ // 视频播放时间
 			if(fullButtom.exists()){ // 全屏暂停状态					
-				getUiDevice().pressBack();
+				uiDevice.pressBack();
 				System.out.println("exit full screen!" );
 					
 			}else if(playControl.exists()){ //非全屏,暂停状态
@@ -113,7 +124,7 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 					sleep(2000);
 					UiObject fulllandscapeBottom =  new UiObject(new UiSelector().resourceId("com.qiyi.video:id/player_landscape_bottom_area"));  	
 					if(fulllandscapeBottom.exists()){  // 	全屏
-						getUiDevice().pressBack();
+						uiDevice.pressBack();
 						System.out.println("exit full screen!" );	
 					}else{					
 						landscapeButton.click();
@@ -128,7 +139,7 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		
 	}
 	
-	private void stopbeginSwitch() throws UiObjectNotFoundException{
+	void stopbeginSwitch() throws UiObjectNotFoundException{
 			
 		UiObject adsplayer = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/btn_adsPlayer")); // 广告 暂停or播放
 		UiObject pause = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/btn_pause"));  // 视频 暂停 or 开始
@@ -181,7 +192,7 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 	}
 	
 	
-    private void searchandWatchVideo(String some) throws UiObjectNotFoundException{  
+    void searchandWatchVideo(String some) throws UiObjectNotFoundException{  
     	UiObject searchText = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/titleIndexSearchImage"));
 		searchText.clickAndWaitForNewWindow();
 		
@@ -215,29 +226,33 @@ public class AiqiyiOperation extends UiAutomatorTestCase{
 		//程序结束后，视频播放仍然继续
 	}
 	
-    private void watchDownloadedVideo() throws UiObjectNotFoundException{  
+    void watchDownloadedVideo() throws UiObjectNotFoundException{  
     	
     	UiObject downloadTitle = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/titleDownloadLayout"));
     	downloadTitle.clickAndWaitForNewWindow();
     	
     	UiObject downloadList = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list"));
     	int num = downloadList.getChildCount();
+    	if(num > 1){
+    		UiObject oneitems = downloadList.getChild(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list_item_layout").className("android.widget.RelativeLayout").index(num-1));
+    		oneitems.clickAndWaitForNewWindow();
     	
-    	UiObject oneitems = downloadList.getChild(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list_item_layout").className("android.widget.RelativeLayout").index(num-1));
-    	oneitems.clickAndWaitForNewWindow();
+    		UiObject downloadItemList = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list"));
+    		int itemnum = downloadItemList.getChildCount();
+    		UiObject oneitem = downloadItemList.getChild(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list_item_layout").className("android.widget.RelativeLayout").index(itemnum-1));
+    		oneitem.clickAndWaitForNewWindow();
+    		//只能全屏观看
     	
-    	UiObject downloadItemList = new UiObject(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list"));
-    	int itemnum = downloadItemList.getChildCount();
-    	UiObject oneitem = downloadItemList.getChild(new UiSelector().resourceId("com.qiyi.video:id/phone_download_list_item_layout").className("android.widget.RelativeLayout").index(itemnum-1));
-    	oneitem.clickAndWaitForNewWindow();
-    	//只能全屏观看
-    	
-    	sleep(5000); 
-    	stopbeginSwitch(); //暂停
-		sleep(2000); 
-		stopbeginSwitch();  // 开始
+    		sleep(5000); 
+    		stopbeginSwitch(); //暂停
+    		sleep(2000); 
+    		stopbeginSwitch();  // 开始
 		
-		//程序结束后，视频播放仍然继续
+    		//程序结束后，视频播放仍然继续
+    	}else{
+    		
+    		System.out.println("There exists no downloaded video!" );
+    	}
     	
     }
     

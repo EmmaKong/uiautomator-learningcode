@@ -2,8 +2,11 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
+//import android.os.RemoteException;
 
+
+
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiScrollable;
@@ -11,6 +14,7 @@ import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class QQOperation extends UiAutomatorTestCase {
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		
 		openQQ();
@@ -28,8 +32,15 @@ public class QQOperation extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 		
 	}
+	*/
 	
-	private void openQQ() throws UiObjectNotFoundException{
+	UiDevice uiDevice;	
+	// 构造函数
+	public QQOperation(UiDevice device) {
+        uiDevice = device;      
+    }
+	
+	void openQQ() throws UiObjectNotFoundException{
 		
 		try {
 		    Runtime.getRuntime().exec("am start -n com.tencent.mobileqq/.activity.SplashActivity");
@@ -43,15 +54,17 @@ public class QQOperation extends UiAutomatorTestCase {
 		} catch (InterruptedException e1) {  
 		    e1.printStackTrace();  
 		}  	
+		
+		System.out.println("Open MobileQQ!");
 	}
 	
-	private void update() throws UiObjectNotFoundException{
+	void update() throws UiObjectNotFoundException{
 		//获取屏幕大小
-		int height = getUiDevice().getDisplayHeight();
-		int width = getUiDevice().getDisplayWidth();	
+		int height = uiDevice.getDisplayHeight();
+		int width = uiDevice.getDisplayWidth();	
 			 
 		// 下拉刷新
-	    getUiDevice().swipe(width/2, 500, width/2, height-500, 50);
+		uiDevice.swipe(width/2, 500, width/2, height-500, 50);
 		//等待2秒  
 		try {  
 			Thread.sleep(2000);  
@@ -60,7 +73,7 @@ public class QQOperation extends UiAutomatorTestCase {
 	    }          
 	}
 	
-	private void readUnreadmsg() throws UiObjectNotFoundException{
+	void readUnreadmsg() throws UiObjectNotFoundException{
 		UiObject QQtabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 				
 		UiObject message = QQtabs.getChild(new UiSelector().index(0).className("android.widget.RelativeLayout"));
@@ -72,38 +85,42 @@ public class QQOperation extends UiAutomatorTestCase {
 		
 		int numofchat = recentchatList.getChildCount();
 		recentchatList.swipeDown(1);
-		for(int i = 1; i < numofchat; i++){
+		if(numofchat > 1){  // 搜索框，index为0
+			for(int i = 1; i < numofchat; i++){
 			
-			sleep(1000);
-			UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").index(i));			
-			UiObject unreadIndi = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mobileqq:id/unreadmsg"));
+				sleep(1000);
+				UiObject messageLayout = recentchatList.getChild(new UiSelector().className("android.widget.LinearLayout").index(i));			
+				UiObject unreadIndi = messageLayout.getChild(new UiSelector().resourceId("com.tencent.mobileqq:id/unreadmsg"));
 				
-			if(unreadIndi.exists()){
-				System.out.println("The "+i+"th message list");	
-				messageLayout.clickAndWaitForNewWindow();
+				if(unreadIndi.exists()){
+					System.out.println("The "+i+"th unread message list");	
+					messageLayout.clickAndWaitForNewWindow();
 				
-				UiScrollable messageListView = new UiScrollable(new UiSelector().resourceId("com.tencent.mobileqq:id/listView1").scrollable(true));
-				if(messageListView.exists()){
-					while(true){
-						messageListView.scrollBackward();
-						sleep(1000);
-						UiObject timestamp = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/chat_item_time_stamp"));
-						if(timestamp.exists()){
-							System.out.println("I find it");	
-							break;  // 退出循环
-						}	
+					UiScrollable messageListView = new UiScrollable(new UiSelector().resourceId("com.tencent.mobileqq:id/listView1").scrollable(true));
+					if(messageListView.exists()){
+						while(true){
+							messageListView.scrollBackward();
+							sleep(1000);
+							UiObject timestamp = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/chat_item_time_stamp"));
+							if(timestamp.exists()){
+								System.out.println("I find it");	
+								break;  // 退出循环
+							}	
+						}
 					}
-				}
-				getUiDevice().pressBack();
+					uiDevice.pressBack();
 							
-			}		
+				}		
 			
+			}		
+		}else{
+			System.out.println("There exists no unread messages!");	
 		}
 				
 	}
 	
 	
-	private void scanRelatedwithMe(int num) throws UiObjectNotFoundException{   // num 控制浏览长度
+	void scanRelatedwithMe(int num) throws UiObjectNotFoundException{   // num 控制浏览长度
 		
 		UiObject qzoneMenu = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/name").className("android.widget.LinearLayout").index(3));
 		
@@ -123,11 +140,11 @@ public class QQOperation extends UiAutomatorTestCase {
 			
 			}
 		}
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void saySomething(String some) throws UiObjectNotFoundException{    // 发表说说
+	void saySomething(String some) throws UiObjectNotFoundException{    // 发表说说
 		
 		UiObject QzoneTitle = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/name").className("android.widget.RelativeLayout").clickable(true));
 		
@@ -145,11 +162,11 @@ public class QQOperation extends UiAutomatorTestCase {
 		UiObject sendButton = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/ivTitleBtnRightText"));
 		sendButton.click();
 		
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void scanMainzone(int num) throws UiObjectNotFoundException{   // num 控制浏览长度
+	void scanMainzone(int num) throws UiObjectNotFoundException{   // num 控制浏览长度
 		
 		UiScrollable Mainview = new UiScrollable(new UiSelector().resourceId("com.tencent.mobileqq:id/name").className("android.view.View").scrollable(true));
 		
@@ -174,7 +191,7 @@ public class QQOperation extends UiAutomatorTestCase {
 	
 	
 	
-	private void scanQQZone() throws UiObjectNotFoundException{
+	void scanQQZone() throws UiObjectNotFoundException{
 		UiObject QQtabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 		
 		UiObject dynamic = QQtabs.getChild(new UiSelector().index(2).className("android.widget.FrameLayout"));
@@ -200,7 +217,7 @@ public class QQOperation extends UiAutomatorTestCase {
 		
 	}
 	
-	private void accountSetting() throws UiObjectNotFoundException{ 
+	void accountSetting() throws UiObjectNotFoundException{ 
 		
 		UiObject settingEntry = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/conversation_head"));
 		settingEntry.click();
@@ -225,14 +242,14 @@ public class QQOperation extends UiAutomatorTestCase {
 			online.click();
 			System.out.println("Change QQ to the state of online");		
 		}
-		getUiDevice().pressBack();
-		getUiDevice().pressBack();
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
+		uiDevice.pressBack();
+		uiDevice.pressBack();
 			
 		
 	}
 	
-	private void addsomeone(String sb) throws UiObjectNotFoundException{ 
+	void addsomeone(String sb) throws UiObjectNotFoundException{ 
 		
 		UiObject QQtabs = new UiObject(new UiSelector().resourceId("android:id/tabs"));
 			
@@ -261,7 +278,7 @@ public class QQOperation extends UiAutomatorTestCase {
 		String edit = vertifyText.getText();
 		vertifyText.clickBottomRight();
     	for (int i = 0; i < edit.length(); i++) {
-    		getUiDevice().pressDelete();
+    		uiDevice.pressDelete();
     	   
     	}
     	vertifyText.setText("I am Emma");
@@ -274,10 +291,10 @@ public class QQOperation extends UiAutomatorTestCase {
 		UiObject send = new UiObject(new UiSelector().resourceId("com.tencent.mobileqq:id/ivTitleBtnRightText").className("android.widget.TextView"));
 		send.click();
 		sleep(1000);
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		sleep(1000);
 	
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	

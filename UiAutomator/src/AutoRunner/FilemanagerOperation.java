@@ -2,9 +2,9 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
 import android.widget.ListView;
 
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiSelector;
@@ -12,17 +12,23 @@ import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class FilemanagerOperation extends UiAutomatorTestCase {
 	
-	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
+	//public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		
-		openFilemanager();
+	//	openFilemanager();
 		
-		deleteAllApks();
+	//	deleteAllApks();
 		
-		getUiDevice().pressHome();
+	//	getUiDevice().pressHome();
 		
-	}
+	//}
 	
-	private void openFilemanager() throws UiObjectNotFoundException{
+	UiDevice uiDevice;	
+	// ¹¹Ôìº¯Êý
+	public FilemanagerOperation(UiDevice device) {
+        uiDevice = device;      
+    }
+	
+	void openFilemanager() throws UiObjectNotFoundException{
 		
 		try {
 	         Runtime.getRuntime().exec("am start -n com.android.filemanager/.FileManagerActivity");
@@ -36,9 +42,11 @@ public class FilemanagerOperation extends UiAutomatorTestCase {
 	    } catch (InterruptedException e1) {  
 	    	e1.printStackTrace();  
 	    }  	
+	    
+	    System.out.println("Open Filemanager!");
 	}
 	
-	private void deleteAllApks() throws UiObjectNotFoundException{
+    void deleteAllApks() throws UiObjectNotFoundException{
 		
 		UiObject CatagoryItem = new UiObject(new UiSelector().resourceId("com.android.filemanager:id/category_browse"));
 		UiObject CategoryView = new UiObject(new UiSelector().className("android.widget.TextView").text("Category"));
@@ -70,7 +78,7 @@ public class FilemanagerOperation extends UiAutomatorTestCase {
 	    	
 	    }
 	    sleep(1000);
-	    getUiDevice().pressBack();
+	    uiDevice.pressBack();
 	    
 	     
 		

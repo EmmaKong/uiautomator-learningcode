@@ -2,8 +2,10 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
 
+
+
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiScrollable;
@@ -13,7 +15,7 @@ import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 
 public class WeiboOperation extends UiAutomatorTestCase {
-	
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 			
 			
@@ -34,9 +36,15 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 					
 	}
+*/
 
-		
-	private void openWeibo() throws UiObjectNotFoundException{
+	UiDevice uiDevice;	
+	// 构造函数
+	public WeiboOperation(UiDevice device) {
+        uiDevice = device;      
+    }
+	
+	void openWeibo() throws UiObjectNotFoundException{
 			
 		try {
 		    Runtime.getRuntime().exec("am start -n com.sina.weibo/.SplashActivity");
@@ -50,18 +58,20 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		} catch (InterruptedException e1) {  
 		    e1.printStackTrace();  
 		}  	
+		
+		System.out.println("Open Weibo!");
 	}
 		
-	private void update() throws UiObjectNotFoundException{
+	void update() throws UiObjectNotFoundException{
 		//获取屏幕大小
-		int height = getUiDevice().getDisplayHeight();
-		int width = getUiDevice().getDisplayWidth();	
+		int height = uiDevice.getDisplayHeight();
+		int width = uiDevice.getDisplayWidth();	
 		// 刷新
 		UiObject weiboHome = new UiObject(new UiSelector().description("Home"));
 	    weiboHome.clickAndWaitForNewWindow();
 			 
 		// 下拉刷新
-	    getUiDevice().swipe(width/2, 100, width/2, height-100, 5);
+	    uiDevice.swipe(width/2, 100, width/2, height-100, 5);
 		//等待5秒  
 		try {  
 			Thread.sleep(5000);  
@@ -70,9 +80,9 @@ public class WeiboOperation extends UiAutomatorTestCase {
 	    }          
 	}
 		
-	private void scanHomepage() throws UiObjectNotFoundException{
-		//int height = getUiDevice().getDisplayHeight();
-		int width = getUiDevice().getDisplayWidth();
+	void scanHomepage() throws UiObjectNotFoundException{
+		
+		int width = uiDevice.getDisplayWidth();
 			
 		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));	
 		rltitlemiddle.click();
@@ -80,7 +90,7 @@ public class WeiboOperation extends UiAutomatorTestCase {
 	//	UiObject Homepage = new UiObject(new UiSelector().text("Homepage"));
 	//	Homepage.clickAndWaitForNewWindow();
 		sleep(2000);
-		getUiDevice().click(width/2, 250);
+		uiDevice.click(width/2, 250);
 		
 		UiScrollable listview = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser").scrollable(true));
 		if(listview.exists()){
@@ -94,10 +104,9 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		
 	}
 		
-	private void scanFriendcircle() throws UiObjectNotFoundException{
+	void scanFriendcircle() throws UiObjectNotFoundException{
 		
-		//int height = getUiDevice().getDisplayHeight();
-		int width = getUiDevice().getDisplayWidth();
+		int width = uiDevice.getDisplayWidth();
 			
 		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));	
 		rltitlemiddle.click();
@@ -105,7 +114,7 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		//UiObject Friendcircle = new UiObject(new UiSelector().text("Friends Circle"));
 		//Friendcircle.clickAndWaitForNewWindow();
 		sleep(2000);
-		getUiDevice().click(width/2, 370);
+		uiDevice.click(width/2, 370);
 				
 		UiScrollable listview = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser").scrollable(true));
 		if(listview.exists()){	
@@ -118,9 +127,9 @@ public class WeiboOperation extends UiAutomatorTestCase {
 	}
 	
 	
-	private void scanMyWeibo() throws UiObjectNotFoundException{
-		//int height = getUiDevice().getDisplayHeight();
-		int width = getUiDevice().getDisplayWidth();
+	void scanMyWeibo() throws UiObjectNotFoundException{
+	
+		int width =uiDevice.getDisplayWidth();
 			
 		UiObject rltitlemiddle = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rltitlemiddle"));		
 		rltitlemiddle.click();
@@ -128,7 +137,7 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		//UiObject Myweibo = new UiObject(new UiSelector().text("My Weibo"));
 		//Myweibo.clickAndWaitForNewWindow();
 		sleep(2000);
-		getUiDevice().click(width/2, 575);
+		uiDevice.click(width/2, 575);
 		
 		UiScrollable listView = new UiScrollable(new UiSelector().resourceId("com.sina.weibo:id/lvUser"));
 		if(listView.exists()){
@@ -142,7 +151,7 @@ public class WeiboOperation extends UiAutomatorTestCase {
 			
 	}
 	
-	private void shareSomething() throws UiObjectNotFoundException{
+	void shareSomething() throws UiObjectNotFoundException{
 		UiObject share = new UiObject(new UiSelector().resourceId("com.sina.weibo:id/rl_composer"));
 	    if(share.exists()){
 	    	share.clickAndWaitForNewWindow();
@@ -161,7 +170,7 @@ public class WeiboOperation extends UiAutomatorTestCase {
 		
 	}
 	
-	private void clearCache() throws UiObjectNotFoundException{
+	void clearCache() throws UiObjectNotFoundException{
 		
 		UiObject weiboProfile = new UiObject(new UiSelector().description("Profile"));
 	    weiboProfile.clickAndWaitForNewWindow();
@@ -177,7 +186,7 @@ public class WeiboOperation extends UiAutomatorTestCase {
 			clearOk.click();  
 			sleep(2000);
 		}
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	

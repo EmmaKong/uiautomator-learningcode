@@ -2,8 +2,10 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
+//import android.os.RemoteException;
 
+
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiScrollable;
@@ -11,6 +13,7 @@ import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class WeichatOperation extends UiAutomatorTestCase {
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		
 		openWeiChat();
@@ -26,8 +29,15 @@ public class WeichatOperation extends UiAutomatorTestCase {
 		readUnreadSubscription(); 
 		
 	}
+	*/
 	
-	private void openWeiChat() throws UiObjectNotFoundException{
+	UiDevice uiDevice;	
+	// 构造函数
+	public WeichatOperation(UiDevice device) {
+        uiDevice = device;      
+    }
+	
+	void openWeiChat() throws UiObjectNotFoundException{
 		
 		try {
 	         Runtime.getRuntime().exec("am start -n com.tencent.mm/.ui.LauncherUI");
@@ -40,16 +50,18 @@ public class WeichatOperation extends UiAutomatorTestCase {
 	         Thread.sleep(5000);  
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
-	     }  			
+	     }  	
+	     
+	     System.out.println("Open Weichat!");
 	}
 	
-	private void update() throws UiObjectNotFoundException{
+	void update() throws UiObjectNotFoundException{
 		//获取屏幕大小
-		int height = getUiDevice().getDisplayHeight();
-		int width = getUiDevice().getDisplayWidth();	
+		int height = uiDevice.getDisplayHeight();
+		int width = uiDevice.getDisplayWidth();	
 			 
 		// 下拉刷新
-	    getUiDevice().swipe(width/2, 500, width/2, height-500, 50);
+		uiDevice.swipe(width/2, 500, width/2, height-500, 50);
 		//等待2秒  
 		try {  
 			Thread.sleep(2000);  
@@ -58,7 +70,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 	    }          
 	}
 	
-	private void OptIn() throws UiObjectNotFoundException{  // 点赞
+	void OptIn() throws UiObjectNotFoundException{  // 点赞
 		UiObject bqf = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/bqf").description("Comment"));
 		bqf.click();
 		sleep(2000);
@@ -70,7 +82,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 		}	
 	}
 	
-	private void scanMyPosts() throws UiObjectNotFoundException{
+	void scanMyPosts() throws UiObjectNotFoundException{
 		// 进入 my posts 两种方法
 		UiObject Me = new UiObject(new UiSelector().text("Me"));
 		UiObject  profile_photo = new UiObject(new UiSelector().descriptionContains("my profile photo"));
@@ -93,11 +105,11 @@ public class WeichatOperation extends UiAutomatorTestCase {
 			}
 		}
 		
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void saySomething(String some) throws UiObjectNotFoundException{    // 发表
+	void saySomething(String some) throws UiObjectNotFoundException{    // 发表
 		
 		UiObject discover = new UiObject(new UiSelector().text("Discover"));
 		
@@ -127,11 +139,11 @@ public class WeichatOperation extends UiAutomatorTestCase {
 		sendButton.click();
 		sleep(1000);
 		
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void sendMessage(String message) throws UiObjectNotFoundException{
+    void sendMessage(String message) throws UiObjectNotFoundException{
 		
 		UiObject messageEdit = new UiObject(new UiSelector().resourceId("com.tencent.mm:id/u6"));
 		messageEdit.click();
@@ -143,11 +155,11 @@ public class WeichatOperation extends UiAutomatorTestCase {
 			sendButton.click();		
 		}	
 		System.out.println("Send a message successfully!");
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void scanFriendCircle(int num) throws UiObjectNotFoundException{
+	void scanFriendCircle(int num) throws UiObjectNotFoundException{
 		UiObject discover = new UiObject(new UiSelector().text("Discover"));
 		discover.clickAndWaitForNewWindow();
 		
@@ -178,11 +190,11 @@ public class WeichatOperation extends UiAutomatorTestCase {
 		for(int i = num; i>0; i--){
 			Listview.scrollBackward();	
 		}
-		getUiDevice().pressBack();
+		uiDevice.pressBack();
 		
 	}
 	
-	private void readUnreadmsg() throws UiObjectNotFoundException{
+	void readUnreadmsg() throws UiObjectNotFoundException{
 				
 		UiObject chats = new UiObject(new UiSelector().text("Chats"));
 	    chats.clickAndWaitForNewWindow();
@@ -202,7 +214,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 					System.out.println("There is unread Subscription!");
 					unreadIndi_sub.clickAndWaitForNewWindow();
 					sleep(2000);	
-					getUiDevice().pressBack();
+					uiDevice.pressBack();
 									
 				}						
 			}else{
@@ -225,7 +237,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 					
 					sendMessage("hahaha!");
 					sleep(1000);
-					getUiDevice().pressBack();
+					uiDevice.pressBack();
 					
 				}			
 				
@@ -236,7 +248,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 	}
 	
 	
-	private void readUnreadSubscription() throws UiObjectNotFoundException{   // 阅读 订阅号
+	void readUnreadSubscription() throws UiObjectNotFoundException{   // 阅读 订阅号
 		
 		UiObject chats = new UiObject(new UiSelector().text("Chats"));
 	    chats.clickAndWaitForNewWindow();
@@ -268,7 +280,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 						
 						
 						
-						getUiDevice().pressBack();
+						uiDevice.pressBack();
 								
 					}
 										
@@ -276,7 +288,7 @@ public class WeichatOperation extends UiAutomatorTestCase {
 					
 			}
 		    
-		    getUiDevice().pressBack();			
+		    uiDevice.pressBack();			
 		}		
 	}
 	

@@ -2,8 +2,11 @@ package AutoRunner;
 
 import java.io.IOException;
 
-import android.os.RemoteException;
+//import android.os.RemoteException;
 
+
+
+import com.android.uiautomator.core.UiDevice;
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiScrollable;
@@ -11,6 +14,7 @@ import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
 public class baiduOperation extends UiAutomatorTestCase {
+	/*
 	public void testDemo() throws UiObjectNotFoundException, RemoteException{  
 		
 		openBaidu();
@@ -23,9 +27,15 @@ public class baiduOperation extends UiAutomatorTestCase {
 		getUiDevice().pressHome();
 		
 	}
+	*/
 	
+	UiDevice uiDevice;	
+	// 构造函数
+	public baiduOperation(UiDevice device) {
+        uiDevice = device;      
+    }
 	
-    private void openBaidu() throws UiObjectNotFoundException{
+    void openBaidu() throws UiObjectNotFoundException{
 		
 		try {
 	         Runtime.getRuntime().exec("am start -n com.baidu.searchbox/.SplashActivity");
@@ -38,10 +48,12 @@ public class baiduOperation extends UiAutomatorTestCase {
 	         Thread.sleep(5000);  
 	     } catch (InterruptedException e1) {  
 	         e1.printStackTrace();  
-	     }  			
+	     }  	
+	     
+	     System.out.println("Open Baidu Browser!");
 	}
     
-    private void searchSomething(String some) throws UiObjectNotFoundException{
+    void searchSomething(String some) throws UiObjectNotFoundException{
     	UiObject searchBox = new UiObject(new UiSelector().resourceId("com.baidu.searchbox:id/baidu_searchbox"));
     	searchBox.clickAndWaitForNewWindow();
     	
@@ -62,12 +74,12 @@ public class baiduOperation extends UiAutomatorTestCase {
         searchContent.clickAndWaitForNewWindow();  // 点击页面中间位置
        	
     	sleep(1000);
-    	getUiDevice().pressBack();
-    	getUiDevice().pressBack();
+    	uiDevice.pressBack();
+    	uiDevice.pressBack();
     	
     }
     
-    private void changeSkin(int num) throws UiObjectNotFoundException{   // 换成左边第 num个
+    void changeSkin(int num) throws UiObjectNotFoundException{   // 换成左边第 num个
     	UiObject homeHeader = new UiObject(new UiSelector().resourceId("com.baidu.searchbox:id/home_header_container"));
     	UiObject skinIndi = homeHeader.getChild(new UiSelector().index(1).className("android.widget.ImageView"));
     	skinIndi.clickAndWaitForNewWindow();
@@ -87,7 +99,7 @@ public class baiduOperation extends UiAutomatorTestCase {
     		applyButton.click();
     	}
     	sleep(1000);
-    	getUiDevice().pressBack();
+    	uiDevice.pressBack();
     
     }
 	
